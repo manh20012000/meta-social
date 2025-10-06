@@ -1,10 +1,19 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import configuration from './configuars/configuration';
+import { AppRabbitmqModule } from './configuars/messaging/rabbitmq.module';
+import { RedisModule } from './configuars/redis/redis.module';
+import { ElasticsModule } from './configuars/elasticsearch/elasticsearch.module';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [configuration], 
+    }),
+    AppRabbitmqModule,
+    RedisModule,
+    ElasticsModule,
+  ],
 })
 export class AppModule {}
